@@ -13,7 +13,7 @@ PKGame是一个用Python编写的休闲小游戏。本软件遵守 New BSD License。PKGame是一款教
 
 \
 	readme_gb.txt	预读文件
-	licesnse.txt	版权文件
+	license.txt	版权文件
 \doc	文档目录
 
 \source	源代码目录
