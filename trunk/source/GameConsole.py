@@ -13,11 +13,18 @@ class Interface(object):
                          u'治疗':self.PrintCureMsg, u'buff':self.PrintBuffMsg,
                          u'unbuff':self.PrintBuffMsg, u'debuff':self.PrintDeBuffMsg,
                          u'undebuff':self.PrintUnBuffMsg, u'pick':self.PrintPickMsg}
+
+        count = 0
+        while True:
+            sc = raw_input(u'请输入参战的玩家人数：'.encode(sysencoding)).decode(sysencoding)
+            if sc.isdigit():
+                break
+            
+        count = int(sc)
         
-        name = raw_input(u'请输入第一个玩家名字：'.encode(sysencoding)).decode(sysencoding)
-        self.GameWorld.AddPlayerByName(name)
-        name = raw_input(u'请输入第二个玩家名字：'.encode(sysencoding)).decode(sysencoding)
-        self.GameWorld.AddPlayerByName(name)
+        for i in xrange(count):
+            name = raw_input(u'请输入玩家名字：'.encode(sysencoding)).decode(sysencoding)
+            self.GameWorld.AddPlayerByName(name)
         
         for p in self.GameWorld.players:
             self.PrintCharCard(p)

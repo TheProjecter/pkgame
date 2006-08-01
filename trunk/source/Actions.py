@@ -114,10 +114,12 @@ class Bluff(object):
             return False
         
 class RandPick(object):
+    __cooldown__ = 2
     def __init__(self, sender):
         self.name = u'拾取'
         self.world = sender.world
         self.sender = sender
+        self.cooldown = 0
 
     def __call__(self):
         item = random.choice([item for item in self.world.items if item.enable])(self.sender)
@@ -125,4 +127,7 @@ class RandPick(object):
         self.world.PostMessage(TextMsg(u'%s拾取了%s!'%(self.sender.name, item.name)))
 
     def checked(self):
-        return len([item for item in self.world.items if item.enable]) > 0
+        re = len([item for item in self.world.items if item.enable]) > 0 and self.cooldown == 0
+        if self.cooldown > 0:
+            self.cooldown -= 1
+        return re

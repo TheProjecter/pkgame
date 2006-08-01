@@ -9,7 +9,7 @@ class PKField(object):
     def __init__(self, interface):
         self.interface = interface
         self.players = []
-        self.items = [Items.ManBook]
+        self.items = [Items.ManBook, Items.Pan, Items.Sausage]
 
     def AddPlayerByName(self, name):
         self.players.append(Player.CreateByDice(self, name))
