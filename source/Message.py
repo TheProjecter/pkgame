@@ -9,7 +9,7 @@ class TextMsg(object):
 class AttackMsg(object):
     def __init__(self, action, sender, target, effect):
         self.name = u'攻击'
-        self.template = u'%s的%s给%s带来了%s点杀伤。'
+        self.template = u'%s的%s给%s造成了%s点杀伤。'
         self.action = action
         self.sender = sender
         self.target = target
