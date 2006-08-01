@@ -2,6 +2,9 @@
 
 import Message
 import GameWorld
+from sys import getfilesystemencoding
+
+sysencoding = getfilesystemencoding()
 
 class Interface(object):
     def __init__(self):
@@ -11,9 +14,9 @@ class Interface(object):
                          u'unbuff':self.PrintBuffMsg, u'debuff':self.PrintDeBuffMsg,
                          u'undebuff':self.PrintUnBuffMsg, u'pick':self.PrintPickMsg}
         
-        name = raw_input(u'请输入第一个玩家名字：'.encode('gbk')).decode('gbk')
+        name = raw_input(u'请输入第一个玩家名字：'.encode(sysencoding)).decode(sysencoding)
         self.GameWorld.AddPlayerByName(name)
-        name = raw_input(u'请输入第二个玩家名字：'.encode('gbk')).decode('gbk')
+        name = raw_input(u'请输入第二个玩家名字：'.encode(sysencoding)).decode(sysencoding)
         self.GameWorld.AddPlayerByName(name)
         
         for p in self.GameWorld.players:
