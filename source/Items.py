@@ -80,4 +80,4 @@ class Sausage(object):
         self.count = 0
 
     def checked(self):
-        return True
+        return self.count > 0

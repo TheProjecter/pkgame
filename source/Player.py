@@ -41,7 +41,9 @@ class Player(object):
             return re
 
     def OnNomal(self):
-        random.choice(self.readyskills + self.readyitems)()
+        self.ChooseTarget()
+        if self.target != None:
+            random.choice(self.readyskills + self.readyitems)()
 
     def OnDown(self):
         self.world.PostMessage(TextMsg(u'%s倒地不起，行动不能，唯有将头偏向一边，默默地流下屈辱泪水。'%self.name))
@@ -55,29 +57,17 @@ class Player(object):
         
         self.items = [item for item in self.items if item.count > 0]
 
-        for d in self.debuff:
-            d.checked()
-
-        for b in self.buff:
-            b.checked()
-
         self.states[self.state]()
 
-    def ChooseTarget(self, players) :
-        length = len(players)
-        if length == 1 :
-            self.target = players[0][0]
-        else :
-            target = [p[0] for p in players if p[0] != self][0]
-            for i in range(length) :
-                p = players[i][0];
-                if p == self :
-                    continue
-                if p.hp > target.hp :
-                    target = p
-            self.target = target
-        
-
+    def ChooseTarget(self) :
+        players = [player for player in self.world.players if player != self and player.hp > 0]
+        if len(players) > 0:
+            self.target = random.choice(players)
+        else:
+            self.target = None
+        #self.target = max([(player, player.hp)
+        #                        for player in self.world.players if player != self],
+        #                    key=lambda x: x[1])[0]
 
 def CreateByDice(world, name):
     dice        = Dice(6)

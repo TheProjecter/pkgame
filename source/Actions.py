@@ -22,20 +22,21 @@ class Attack(object):
             self.world.PostMessage(AttackMsg(self, self.sender, target, harm))
         else:
             self.world.PostMessage(TextMsg(u'%s闪过了%s的推击，发动反推!'%(target.name, self.sender.name)))
-            AntiAttack(target)()
+            AntiAttack(target, self.sender)()
 
     def checked(self):
         return True
 
 
 class AntiAttack(object):
-    def __init__(self, sender):
+    def __init__(self, sender, target):
         self.name = u'反推'
         self.world = sender.world
         self.sender = sender
+        self.target = target
 
     def __call__(self):
-        target = self.sender.target
+        target = self.target
         value = self.sender.str * 5
 
         hit = Dice(self.sender.dex).Roll()
