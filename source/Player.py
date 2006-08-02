@@ -60,8 +60,23 @@ class Player(object):
 
         for b in self.buff:
             b.checked()
-            
+
         self.states[self.state]()
+
+    def ChooseTarget(self, players) :
+        length = len(players)
+        if length == 1 :
+            self.target = players[0][0]
+        else :
+            target = [p[0] for p in players if p[0] != self][0]
+            for i in range(length) :
+                p = players[i][0];
+                if p == self :
+                    continue
+                if p.hp > target.hp :
+                    target = p
+            self.target = target
+        
 
 
 def CreateByDice(world, name):
