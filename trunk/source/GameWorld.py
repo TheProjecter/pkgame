@@ -23,19 +23,11 @@ class PKField(object):
             
         
         while len([p for p in self.players if p.hp > 0]) > 1:
-            
-            #roll first
-            fl = [(p, Dice(p.dex).Roll()) for p in self.players if p.hp > 0]
-            fl.sort(key = lambda x : x[1])
-            l = len(fl)
-            for i in xrange(l):
-                fl[i][0].ChooseTarget(fl) #target = fl[(i+1)%l][0]
-                fl[i][0].OnCall()
+            for player in self.players:
+                self.PostMessage(TextMsg(u'%s hp：%s'%(player.name, player.hp)))
 
-            for i in xrange(l) :
-                player = fl[i][0]
-                self.PostMessage(TextMsg(player.name + ' hp: ' + str(player.hp)))
-
+            for player in self.players:
+                player.OnCall()
             
         for winner in [p for p in self.players if p.hp > 0]:
             self.PostMessage(TextMsg(u'%s成功的推倒了%s，获得了胜利!'%(winner.name, winner.target.name)))
