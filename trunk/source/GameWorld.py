@@ -28,9 +28,11 @@ class PKField(object):
 
             for player in self.players:
                 player.OnCall()
+
+            time.sleep(1)
             
         for winner in [p for p in self.players if p.hp > 0]:
-            self.PostMessage(TextMsg(u'%s成功的推倒了对手，获得了胜利!'%winner.name))
+            self.PostMessage(TextMsg(u'%s成功的推倒了对手%s，获得了胜利!'%(winner.name, u'，'.join([player.name for player in self.players if player!=winner]))))
 
     def PostMessage(self, msg):
         try:
