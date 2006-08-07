@@ -1,0 +1,28 @@
+GameWorld.py是PKGame的游戏逻辑内核，它提供决斗场类型。决斗场对象为玩家对象提供战斗场所，并负责向游戏界面发送战斗中生成的消息。
+目前提供的唯一决斗场是PKField，这个类型可以为玩家提供物品——当然，需要对应的拾取技能。这个在Actions.txt中会详细介绍。
+GameWorld.py引用了以下模块：
+Player：引入Player类型。这是玩家游戏逻辑。
+Dice：引入Dice类型。这是骰子。
+Message：引入各种消息类型。
+Items：Items模块定义了可供使用的物品。
+time：系统模块time提供了必要的时间控制技能。
+
+PKField的设计：
+PKField.__init__(self, interface)
+PKField的初始化方法，interface参数引入用户操作界面。
+self.interface保存用户操作界面。
+self.players保存玩家对象列表。初始化为空。
+self.items保存的是可以拾取的物品类型。拾取技能遍历这个列表来获取物品类型并构造在玩家物品列表中。初始化时放入用户可拾取的物品类型。可以通过配置这个列表来控制用户可使用的物品。
+
+PKField.AddPlayerByName(self, name)
+此方法调用Player模块的CreateByDice(owner, name)工厂方法生成玩家对象，并调用标准的链表方法将其加入players链表。
+
+PKField.PostMessage(self, msg)
+此方法处理各对象（包括PKField对象自己的消息）。此版本仅简单的将消息转发给interface对象打印。
+要说明的是这里的设计有缺陷，interface直接暴露了一个消息处理方法字典提供给PKField遍历。这显然不符合最小耦合的设计原则。更好的办法是interface提供一个PostMessage方法，在里面自己处理消息分派逻辑。
+
+PKField.Play(self)
+此方法是游戏的运行逻辑实现。首先判定游戏玩家中还有不止一个存活，然后打印玩家的hp。遍历玩家列表，调用其OnCall()方法。
+当玩家中只有一个hp>0，表示决斗结束，最后存活的这个玩家即为获胜者。打印获胜的提示信息。
+
+PKField要求player类型实现hp属性和OnCall方法。
