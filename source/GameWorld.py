@@ -15,12 +15,6 @@ class PKField(object):
         self.players.append(Player.CreateByDice(self, name))
 
     def Play(self):
-        l = len(self.players)
-
-        
-        for i in xrange(l):
-            self.players[i].target = self.players[(i+1)%l]
-            
         
         while len([p for p in self.players if p.hp > 0]) > 1:
             for player in self.players:
