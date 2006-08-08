@@ -1,0 +1,33 @@
+Player.py定义玩家对象行为。
+
+Player.py引用以下模块：
+random：系统模块random提供必要的随机操作功能。
+Message：此模块提供必要的信息类型。
+Actions：此模块提供技能类型。
+Dice：此模块的Dic类型提供骰子功能。
+
+Player.__init__(self, world, name)
+此方法提供Player对象的初始化功能。在初始化时，将world对象赋予self.world，这是Player的所有者，即战场对象。将name保存于self.name。
+此方法初始化一个空的skills链表，一个空的buff链表，一个空的debuff链表，一个空的items链表。建立一个基本的状态响应字典states，并将状态state设为u'正常'。
+此方法没有初始化Player的基本人物属性，这个交由Player模块的具体工厂方法完成。工厂方法在设定完人物属性后，应调用FinallyCreate()方法完成人物的最终创建。根据设计人物应该有str（力量），dex（敏捷），con（体质），int（智力），wis（感知），cha（魅力）6个属性。
+Player.FinallyCreate(self)
+此方法设定玩家的hp和mana。分别是con*10和int*10。并设定技能列表self.skills。配置此列表可以设定玩家可使用的技能。
+
+Player.BeHurt(self, value)
+此方法实现玩家被伤害的行为。value为受到的攻击值，如果hp大于value，就扣除value，否则hp设为0，玩家状态变为u'被推倒'。返回玩家hp实际被扣除的值。
+
+Player.BeCure(self, value)
+此方法实现玩家被治疗的行为。value为受到的治疗值，如果hp加上value大于玩家可能的最大生命值，就将hp设为最大生命值，否则将玩家生命设为hp+value。返回玩家hp实际增加的值。
+
+Player.OnNomal(self)
+此函数实现玩家正常状态下的行为，调用self.ChooseTarget方法选定玩家的目标，然后在可使用的技能和物品中随机选择一种调用。
+
+Player.OnDown(self)
+此函数实现玩家死亡状态下的行为，调用self.world.PostMessage()发送提示消息。
+
+Player.OnCall(self)
+此函数实现玩家轮询响应，首先调用各buff和debuff的checked方法，保留尚未实效的影响。然后在skills和items中筛选出可用的技能和物品，放入对应的可用列表。再筛选self.items，保留count>0的物品。然后用玩家当前的state调用self.states方法表。
+
+Player.ChooseTarget(self)
+此函数从self.world.players中随机选取玩家自身以外的活动玩家对象，赋给self.target。如果找不到符合条件的玩家，将self.target置空。
+
