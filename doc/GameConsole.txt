@@ -1,0 +1,16 @@
+﻿GameConsole.py是一个命令行的游戏操作界面，仅提供了基本的输入输出。
+GameConsole 引用了Message模块和GameWorld模块，以使用相应的类型。
+GameConsole还从sys模块中引入了getfilesystemencoding以获取环境的字符集编码。
+
+GameConsole模块定义了Interface类型。这个类型实现对游戏引擎的调用和与玩家的交互。
+
+Interface.__init__(self)方法首先构造游戏引擎对象，并将自身传递为interface对象。同时保存引擎为GameWorld成员变量。然后定义可处理的消息字典。需要注意的是目前的设计中Interface直接将这个字典PrintMsg交由GameWorld使用，这其实是一个设计缺陷。更好的方法是将消息类型甄别和处理封装成一个单一的PostMessage方法交给GameWorld调用。
+此方法中提示玩家输入参战人数和玩家姓名，然后调用GameWorld的AddPlayerByName方法生成玩家。然后打印玩家属性。输入输出的文本信息经由getfilesystemencoding方法获得的字符集进行编解码。
+
+Interface.Play()方法调用self.GameWorld.Player()进行战斗。
+
+Interface.PrintCharCard(self, player)是打印玩家属性信息的方法。
+
+Interface为Message模块中定义的各种消息提供了对应的打印方法，并通过self.PrintMsg字典与对应的消息类型进行绑定。
+
+GameConsole.py执行时生成一个Interface类型的对象，然后调用其Play方法。
