@@ -1,0 +1,6 @@
+Dice.py提供骰子生成功能。
+
+调用Dice类的构造函数Dice.__init__(self, face)，可以生成一个1到N的骰子。
+调用Dice模块的MakeDice(minPoint, MaxPoint)方法，可以，生成一个n到m的骰子。
+
+调用Dice对象的Roll(self, times = 1)方法，可以投出times次该骰子，并返回点数总合。
