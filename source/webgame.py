@@ -9,24 +9,29 @@ import web
 import Message
 import GameWorld
 from sys import getfilesystemencoding
-
+import codecs
 sysencoding = getfilesystemencoding()
 
 class Interface(object):
-    def __init__(self, user1, user2):
+    def __init__(self):
+        pass
+
+    def setPlayers(self, players):
+        
         self.GameWorld = GameWorld.PKField(self)
         self.PrintMsg = {u'文本':self.PrintTextMsg, u'攻击':self.PrintAttackMsg,
                          u'治疗':self.PrintCureMsg, u'buff':self.PrintBuffMsg,
                          u'unbuff':self.PrintBuffMsg, u'debuff':self.PrintDeBuffMsg,
                          u'undebuff':self.PrintUnBuffMsg, u'pick':self.PrintPickMsg}
 
-        count = 2
+        count = len(players)
+        for player in players:
+            if player != "":
+                self.GameWorld.AddPlayerByName(codecs.decode(player, 'utf-8'))
 
-        self.GameWorld.AddPlayerByName(user1)
-        self.GameWorld.AddPlayerByName(user2)
         for p in self.GameWorld.players:
-            self.PrintCharCard(p)
-            
+            self.PrintCharCard(p)        
+        
     def Play(self):
         self.GameWorld.Play()
 
@@ -68,11 +73,10 @@ class Interface(object):
 
 urls = (
   '/', 'view',
-  '/fight', 'fight',
-  
+  '/btfight', 'btfight',
 )
 
-import codecs
+
 
 class view:
     def GET(self):
@@ -84,24 +88,47 @@ class view:
         <body>
         <h2>PkGame</h2>
 
-        <form method="post" action="fight">
+        <form method="post" action="btfight">
         玩家1：<input type="text" name="user1"/><br/>
         玩家2：<input type="text" name="user2"/><br/>
         <input type="submit" value="开战"/>
         </form>
+
+        <hr/>
+        <h2>变态多人型</h2>
+        <form method="post" action="btfight">
+        玩家1：<input type="text" name="user1"/><br/>
+        玩家2：<input type="text" name="user2"/><br/>
+        玩家3：<input type="text" name="user3"/><br/>
+        玩家4：<input type="text" name="user4"/><br/>
+        玩家5：<input type="text" name="user5"/><br/>
+        玩家6：<input type="text" name="user6"/><br/>
+        玩家7：<input type="text" name="user7"/><br/>
+        玩家8：<input type="text" name="user8"/><br/>
+        玩家9：<input type="text" name="user9"/><br/>
+        <input type="submit" value="开战"/>
+        </form>
+        
         </body>
         </html>
 
         """
-class fight:
+
+class btfight:
     def POST(self):
-        print '<pre>'
+        print '''
+        <html>
+        <head><title>PKGame</title>
+        <META CONTENT="text/html; charset=utf-8" HTTP-EQUIV="Content-Type" />
+        </head>
+        <body>
+        <pre>'''
         i = web.input()
-        u1 = codecs.decode(i.user1, 'utf-8')
-        u2 = codecs.decode(i.user2, 'utf-8')
-        game = Interface(u1, u2)
+        game = Interface()
+        game.setPlayers(i.values())
         game.Play()
-        print '</pre>'
+        print '</pre></body></html>'
+        
         
 web.internalerror = web.debugerror
 
